@@ -18,7 +18,9 @@ struct ContentView: View {
     var body: some View {
         ZStack {
             VStack(spacing: 10) {
-                Text("App chooses \(moves[appMove])")
+                Text("App chooses")
+                Text(moves[appMove])
+                    .font(.largeTitle)
                 Text("You should \(shouldWin ? "win" : "not win")")
                 Text("Your choice")
                 HStack {
@@ -26,6 +28,7 @@ struct ContentView: View {
                         Button(moves[number]) {
                             buttonTapped(number)
                         }
+                        .font(.system(size: 75))
                     }
                 }
             }
