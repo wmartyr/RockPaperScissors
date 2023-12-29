@@ -12,22 +12,49 @@ struct ContentView: View {
 
     @State private var appMove = Int.random(in: 0..<3)
     @State private var shouldWin = Bool.random()
-    @State private var playerMove = 0
+    @State private var resultTitle = ""
+    @State private var showingResult = false
     
     var body: some View {
-        VStack(spacing: 10) {
-            Text("App chooses \(moves[appMove])")
-            Text("You should \(shouldWin ? "win" : "lose")")
-            Text("Your choice")
-            HStack {
-                ForEach(0..<moves.count, id: \.self) {
-                    Button(moves[$0]) {
-                        print("Button pressed")
+        ZStack {
+            VStack(spacing: 10) {
+                Text("App chooses \(moves[appMove])")
+                Text("You should \(shouldWin ? "win" : "not win")")
+                Text("Your choice")
+                HStack {
+                    ForEach(0..<moves.count, id: \.self) {number in
+                        Button(moves[number]) {
+                            buttonTapped(number)
+                        }
                     }
                 }
             }
+            .padding()
         }
-        .padding()
+        .alert(resultTitle, isPresented: $showingResult) {
+            Button("Continue", action: askQuestion)
+        } message: {
+            Text("")
+        }
+    }
+    
+    func playerWinCalculate(_ playerChoice: Int) -> Bool {
+        let moveComparison = playerChoice - appMove
+        return moveComparison == -2 || moveComparison == 1
+    }
+    
+    func buttonTapped(_ playerChoice: Int) {
+        if shouldWin == playerWinCalculate(playerChoice) {
+            resultTitle = "Correct"
+        } else {
+            resultTitle = "Wrong"
+        }
+        showingResult = true
+    }
+    
+    func askQuestion() {
+        appMove = Int.random(in: 0..<3)
+        shouldWin = Bool.random()
     }
 }
 
