@@ -14,6 +14,9 @@ struct ContentView: View {
     @State private var shouldWin = Bool.random()
     @State private var resultTitle = ""
     @State private var showingResult = false
+    @State private var showingFinalScore = false
+    @State private var questionNumber = 0
+    @State private var score = 0
     
     var body: some View {
         ZStack {
@@ -37,7 +40,12 @@ struct ContentView: View {
         .alert(resultTitle, isPresented: $showingResult) {
             Button("Continue", action: askQuestion)
         } message: {
-            Text("")
+            Text("Your score is \(score)")
+        }
+        .alert(resultTitle, isPresented: $showingFinalScore) {
+            Button("Restart", action: restartGame)
+        } message: {
+            Text("Game over. Your final score is \(score) out of 10")
         }
     }
     
@@ -49,15 +57,28 @@ struct ContentView: View {
     func buttonTapped(_ playerChoice: Int) {
         if shouldWin == playerWinCalculate(playerChoice) {
             resultTitle = "Correct"
+            score += 1
         } else {
             resultTitle = "Wrong"
         }
-        showingResult = true
+        questionNumber += 1
+        if questionNumber < 10 {
+            showingResult = true
+        } else {
+            showingFinalScore = true
+        }
+            
     }
     
     func askQuestion() {
         appMove = Int.random(in: 0..<3)
         shouldWin = Bool.random()
+    }
+    
+    func restartGame() {
+        questionNumber = 0
+        score = 0
+        askQuestion()
     }
 }
 
