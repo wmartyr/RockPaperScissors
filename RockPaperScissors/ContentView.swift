@@ -20,12 +20,23 @@ struct ContentView: View {
     
     var body: some View {
         ZStack {
+            LinearGradient(gradient: Gradient(colors: [.white, .blue]), startPoint: .top, endPoint: .bottom)
+                .ignoresSafeArea()
             VStack(spacing: 10) {
+                Spacer()
+                Spacer()
                 Text("App chooses")
+                    .font(.title)
                 Text(moves[appMove])
+                    .font(.system(size: 75))
+                Text("You should")
+                    .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+                Text("\(shouldWin ? "WIN" : "NOT WIN")")
                     .font(.largeTitle)
-                Text("You should \(shouldWin ? "win" : "not win")")
+                    .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+                Spacer()
                 Text("Your choice")
+                    .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
                 HStack {
                     ForEach(0..<moves.count, id: \.self) {number in
                         Button(moves[number]) {
@@ -34,6 +45,8 @@ struct ContentView: View {
                         .font(.system(size: 75))
                     }
                 }
+                Spacer()
+                Spacer()
             }
             .padding()
         }
